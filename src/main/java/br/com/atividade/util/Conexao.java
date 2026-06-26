@@ -1,4 +1,4 @@
-package org.atividade.util;
+package br.com.atividade.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
