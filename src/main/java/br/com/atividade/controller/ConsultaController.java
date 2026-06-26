@@ -23,7 +23,7 @@ public class ConsultaController {
         } catch (IllegalArgumentException e) {
             System.out.println("Erro de validação: " + e.getMessage());
         } catch (SQLException e) {
-            System.out.println("Erro ao salvar consulto: " + e.getMessage());
+            System.out.println("Erro ao salvar venda: " + e.getMessage());
         }
         return null;
     }
