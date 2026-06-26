@@ -30,7 +30,7 @@ public class ConsultaRepository {
                             consulta.getMotivo(),
                             consulta.getValor());
                 }
-                throw new SQLException("Erro ao obter o ID do animal inserido.");
+                throw new SQLException("Erro ao obter o ID do consulta inserido.");
             }
         }
     }
