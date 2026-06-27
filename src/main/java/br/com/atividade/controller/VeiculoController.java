@@ -1,6 +1,5 @@
 package br.com.atividade.controller;
 
-import br.com.atividade.model.Cliente;
 import br.com.atividade.model.Veiculo;
 import br.com.atividade.repository.ClienteRepository;
 import br.com.atividade.repository.VeiculoRepository;

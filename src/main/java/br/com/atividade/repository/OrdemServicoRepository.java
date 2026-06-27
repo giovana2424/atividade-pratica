@@ -1,6 +1,5 @@
 package br.com.atividade.repository;
 
-import br.com.atividade.model.Cliente;
 import br.com.atividade.model.OrdemServico;
 import br.com.atividade.model.Veiculo;
 import br.com.atividade.util.Conexao;

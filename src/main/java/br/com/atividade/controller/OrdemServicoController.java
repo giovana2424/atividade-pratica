@@ -1,14 +1,12 @@
 package br.com.atividade.controller;
 
 import br.com.atividade.model.OrdemServico;
-import br.com.atividade.model.Veiculo;
 import br.com.atividade.repository.OrdemServicoRepository;
 import br.com.atividade.repository.VeiculoRepository;
 import br.com.atividade.service.OrdemServicoService;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class OrdemServicoController {
