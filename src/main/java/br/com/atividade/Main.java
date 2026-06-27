@@ -1,16 +1,9 @@
 package br.com.atividade;
 
-import br.com.atividade.controller.AnimalController;
-import br.com.atividade.controller.ConsultaController;
-import br.com.atividade.model.Animal;
-import br.com.atividade.model.Consulta;
-import br.com.atividade.model.Endereco;
-import br.com.atividade.model.Tutor;
-import br.com.atividade.repository.AnimalRepository;
-import br.com.atividade.repository.EnderecoRepository;
-import br.com.atividade.repository.TutorRepository;
-import br.com.atividade.service.AnimalService;
-import br.com.atividade.service.ConsultaService;
+import br.com.atividade.controller.AlunoController;
+import br.com.atividade.controller.CursoController;
+import br.com.atividade.controller.MatriculaController;
+import br.com.atividade.model.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -19,72 +12,49 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        EnderecoRepository enderecoRepository = new EnderecoRepository();
-        TutorRepository tutorRepository = new TutorRepository();
-        AnimalRepository animalRepository = new AnimalRepository();
-        AnimalService animalService = new AnimalService();
-        AnimalController animalController = new AnimalController(animalService);
-        ConsultaService consultaService = new ConsultaService();
-        ConsultaController consultaController = new ConsultaController(consultaService);
+        AlunoController alunoController = new AlunoController();
+        CursoController cursoController = new CursoController();
+        MatriculaController matriculaController = new MatriculaController();
 
         try {
-            Endereco novoEndereco = new Endereco(null,
-                    "Rua Daniel C. Vianna",
-                    "123",
-                    "Conjunto Habitacional Jamile Dequech",
-                    "Londrina",
-                    "PR",
-                    "86044-736");
+            System.out.println("Salvando o aluno...");
+            Aluno aluno1 = alunoController.cadastrarAluno("Ivy Lin", "ivylin@gmail.com", "(44) 99999-8888");
 
-            Endereco enderecoSalvo = enderecoRepository.salvar(novoEndereco);
+            System.out.println("Salvando o aluno...");
+            Aluno aluno2 = alunoController.cadastrarAluno("Ian Kim", "ian2324@gmail.com", "(44) 99999-7777");
 
-            Tutor novoTutor = new Tutor(null,
-                    "Carlos Silva",
-                    enderecoSalvo,
-                    "(11) 99999-8888");
+            System.out.println("Salvando o curso...");
+            Curso curso = cursoController.cadastrarCurso("Lógica de Programação com Java", "Aprenda os conceitos básicos de POO, estruturas condicionais e JDBC.", 40, 30);
 
-            System.out.println("Salvando o tutor...");
-            Tutor tutorSalvo = tutorRepository.salvar(novoTutor);
+            System.out.println("Salvando a matrícula...");
+            Matricula matricula = matriculaController.registrarMatricula(LocalDate.now(), new BigDecimal("100"), aluno1.getId(), curso.getId());
+            System.out.println("Salvando a matrícula...");
+            Matricula matricula2 = matriculaController.registrarMatricula(LocalDate.now(), new BigDecimal("100"), aluno2.getId(), curso.getId());
 
-            Animal novoAnimal = new Animal(null,
-                    "Lulu",
-                    "Cachorro",
-                    "Pitbull",
-                    tutorSalvo);
+            apresentarResultado(matriculaController.listarAlunosPorCurso(curso.getId()), curso);
 
-            System.out.println("Salvando o animal...");
-            Animal animalSalvo = animalRepository.salvar(novoAnimal);
-
-            List<Animal> animaisDoTutor = animalController.buscarAnimaisPorTutor(tutorSalvo.getId());
-
-            System.out.println("Animais de " + tutorSalvo.getNome() + ":");
-            for (Animal a : animaisDoTutor) {
-                System.out.println("\nNome: " + a.getNome() +
-                        "\nEspécie: " + a.getEspecie() +
-                        "\nRaça: " + a.getRaca());
-            }
-
-            System.out.println("\nRegistrando consulta para o animal salvo...");
-            Consulta consultaSalva = consultaController.registrarConsulta(
-                    LocalDate.now(),
-                    "Rotina / Vacinação",
-                    new BigDecimal("150.00"),
-                    animalSalvo
-            );
-
-            List<Consulta> consultasDoAnimal = consultaController.buscarConsultasPorAnimal(animalSalvo.getId());
-
-            System.out.println("Histórico de consultas de " + animalSalvo.getNome() + " :");
-
-            for (Consulta c : consultasDoAnimal){
-                System.out.println("\nData do atendimento: " + c.getData() +
-                        "\nMotivo: " + c.getMotivo() +
-                        "\nValor: R$" + c.getValor());
-            }
+            apresentarResultado(matriculaController.listarCursosPorAluno(aluno1.getId()), aluno1);
 
         } catch (SQLException e) {
             System.err.println("Erro: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public static void apresentarResultado(List<Curso> cursos, Aluno aluno){
+        System.out.println("Cursos de " + aluno.getNome() + ":");
+        for (Curso c : cursos) {
+            System.out.println("Nome: " +c.getNome() +
+                    " | Carga Horária: " + c.getCargaHoraria());
+        }
+    }
+
+    public static void apresentarResultado(List<Aluno> alunos, Curso curso){
+        System.out.println("Alunos do curso de " + curso.getNome() + ":");
+        for (Aluno a : alunos) {
+            System.out.println("Nome: " + a.getNome() +
+                    " | E-mail: " + a.getEmail() +
+                    " | Telefone: " + a.getTelefone());
         }
     }
 }
