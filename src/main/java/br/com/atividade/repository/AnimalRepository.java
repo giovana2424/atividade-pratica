@@ -1,7 +1,6 @@
 package br.com.atividade.repository;
 
 import br.com.atividade.model.Animal;
-import br.com.atividade.model.Endereco;
 import br.com.atividade.model.Tutor;
 import br.com.atividade.util.Conexao;
 
@@ -49,8 +48,7 @@ public class AnimalRepository {
 
     public List<Animal> buscarPorTutor(Long idTutor) throws SQLException {
         String sql = """
-            SELECT a.*,
-                   t.nome AS tutor_nome
+            SELECT a.*
             FROM animal a
             JOIN tutor t ON a.tutor_id = t.id
             WHERE a.tutor_id = ?
@@ -66,7 +64,6 @@ public class AnimalRepository {
                 while (rs.next()) {
                     Tutor tutor = new Tutor();
                     tutor.setId(rs.getLong("tutor_id"));
-                    tutor.setNome(rs.getString("tutor_nome"));
 
                     Animal animal = new Animal(
                             rs.getLong("id"),

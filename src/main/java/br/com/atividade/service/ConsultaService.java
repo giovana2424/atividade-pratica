@@ -12,8 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class ConsultaService {
-    private ConsultaRepository consultaRepository = new ConsultaRepository();
-    private AnimalRepository animalRepository = new AnimalRepository();
+    private final ConsultaRepository consultaRepository;
+    private final AnimalRepository animalRepository;
+
+    public ConsultaService(ConsultaRepository consultaRepository, AnimalRepository animalRepository) {
+        this.consultaRepository = consultaRepository;
+        this.animalRepository = animalRepository;
+    }
 
     public Consulta registrar(LocalDate data, String motivo, BigDecimal valor, Long idAnimal) throws SQLException {
         Optional<Animal> animalOpt = animalRepository.buscarPorId(idAnimal);

@@ -1,7 +1,8 @@
 package br.com.atividade.controller;
 
-import br.com.atividade.model.Animal;
 import br.com.atividade.model.Consulta;
+import br.com.atividade.repository.AnimalRepository;
+import br.com.atividade.repository.ConsultaRepository;
 import br.com.atividade.service.ConsultaService;
 
 import java.math.BigDecimal;
@@ -10,15 +11,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ConsultaController {
-    private ConsultaService consultaService;
+    private final ConsultaService consultaService;
 
-    public ConsultaController(ConsultaService consultaService){
-        this.consultaService = consultaService;
+    public ConsultaController(){
+        ConsultaRepository consultaRepository = new ConsultaRepository();
+        AnimalRepository animalRepository = new AnimalRepository();
+        this.consultaService = new ConsultaService(consultaRepository, animalRepository);
     }
 
-    public Consulta registrarConsulta(LocalDate data, String motivo, BigDecimal valor, Animal animal){
+    public Consulta registrarConsulta(LocalDate data, String motivo, BigDecimal valor, Long idAnimal){
         try{
-            return consultaService.registrar(data, motivo, valor, animal.getId());
+            return consultaService.registrar(data, motivo, valor, idAnimal);
 
         } catch (IllegalArgumentException e) {
             System.out.println("Erro de validação: " + e.getMessage());
