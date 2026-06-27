@@ -1,16 +1,11 @@
 package br.com.atividade;
 
-import br.com.atividade.controller.AnimalController;
-import br.com.atividade.controller.ConsultaController;
-import br.com.atividade.model.Animal;
-import br.com.atividade.model.Consulta;
-import br.com.atividade.model.Endereco;
-import br.com.atividade.model.Tutor;
-import br.com.atividade.repository.AnimalRepository;
-import br.com.atividade.repository.EnderecoRepository;
-import br.com.atividade.repository.TutorRepository;
-import br.com.atividade.service.AnimalService;
-import br.com.atividade.service.ConsultaService;
+import br.com.atividade.controller.ClienteController;
+import br.com.atividade.controller.VeiculoController;
+import br.com.atividade.controller.OrdemServicoController;
+import br.com.atividade.model.Cliente;
+import br.com.atividade.model.OrdemServico;
+import br.com.atividade.model.Veiculo;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -19,67 +14,39 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        EnderecoRepository enderecoRepository = new EnderecoRepository();
-        TutorRepository tutorRepository = new TutorRepository();
-        AnimalRepository animalRepository = new AnimalRepository();
-        AnimalService animalService = new AnimalService();
-        AnimalController animalController = new AnimalController(animalService);
-        ConsultaService consultaService = new ConsultaService();
-        ConsultaController consultaController = new ConsultaController(consultaService);
+        ClienteController clienteController = new ClienteController();
+        VeiculoController veiculoController = new VeiculoController();
+        OrdemServicoController ordemServicoController = new OrdemServicoController();
 
         try {
-            Endereco novoEndereco = new Endereco(null,
-                    "Rua Daniel C. Vianna",
-                    "123",
-                    "Conjunto Habitacional Jamile Dequech",
-                    "Londrina",
-                    "PR",
-                    "86044-736");
+            System.out.println("Salvando o cliente...");
+            Cliente cliente = clienteController.cadastrarCliente("Carmen Cabelo", "(44) 91234-5678");
 
-            Endereco enderecoSalvo = enderecoRepository.salvar(novoEndereco);
+            System.out.println("Salvando o veículo...");
+            Veiculo veiculo = veiculoController.cadastrarVeiculo("AVD-8600", "SL-2 1.9", 1991, cliente.getId());
 
-            Tutor novoTutor = new Tutor(null,
-                    "Carlos Silva",
-                    enderecoSalvo,
-                    "(11) 99999-8888");
+            List<Veiculo> veiculosDoCliente = veiculoController.buscarVeiculosPorCliente(cliente.getId());
 
-            System.out.println("Salvando o tutor...");
-            Tutor tutorSalvo = tutorRepository.salvar(novoTutor);
-
-            Animal novoAnimal = new Animal(null,
-                    "Lulu",
-                    "Cachorro",
-                    "Pitbull",
-                    tutorSalvo);
-
-            System.out.println("Salvando o animal...");
-            Animal animalSalvo = animalRepository.salvar(novoAnimal);
-
-            List<Animal> animaisDoTutor = animalController.buscarAnimaisPorTutor(tutorSalvo.getId());
-
-            System.out.println("Animais de " + tutorSalvo.getNome() + ":");
-            for (Animal a : animaisDoTutor) {
-                System.out.println("\nNome: " + a.getNome() +
-                        "\nEspécie: " + a.getEspecie() +
-                        "\nRaça: " + a.getRaca());
+            System.out.println("\n--- Veículos de " + cliente.getNome() + " ---");
+            for (Veiculo v : veiculosDoCliente) {
+                System.out.println("Placa: " + v.getPlaca() +
+                        " | Modelo: " + v.getModelo() +
+                        " | Ano: " + v.getAno());
             }
 
-            System.out.println("\nRegistrando consulta para o animal salvo...");
-            Consulta consultaSalva = consultaController.registrarConsulta(
-                    LocalDate.now(),
-                    "Rotina / Vacinação",
-                    new BigDecimal("150.00"),
-                    animalSalvo
-            );
+            System.out.println("\nRegistrando ordem de serviço...");
+            OrdemServico ordemServico = ordemServicoController.registrarOrdemServico("Troca de óleo e filtro", new BigDecimal("50"), veiculo.getId());
 
-            List<Consulta> consultasDoAnimal = consultaController.buscarConsultasPorAnimal(animalSalvo.getId());
+            ordemServicoController.finalizarOrdemServico(ordemServico.getId());
 
-            System.out.println("Histórico de consultas de " + animalSalvo.getNome() + " :");
+            List<OrdemServico> ordensServicoDoVeiculo = ordemServicoController.buscarOrdensDeServicoPorVeiculo(veiculo.getId());
 
-            for (Consulta c : consultasDoAnimal){
-                System.out.println("\nData do atendimento: " + c.getData() +
-                        "\nMotivo: " + c.getMotivo() +
-                        "\nValor: R$" + c.getValor());
+            System.out.println("Histórico de manuntenções do veículo:");
+
+            for (OrdemServico os : ordensServicoDoVeiculo){
+                System.out.println("Descrição: " + os.getDescricao() +
+                        " | Valor: R$" + os.getValor() +
+                        " | Status: " + os.getStatus());
             }
 
         } catch (SQLException e) {
