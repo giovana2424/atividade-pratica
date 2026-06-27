@@ -54,28 +54,17 @@ public class OrdemServicoRepository {
             WHERE os.veiculo_id = ?
         """;
 
-        List<OrdemServico> ordensServico = new ArrayList<>();
-
+        List<OrdemServico> lista = new ArrayList<>();
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, idVeiculo);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Veiculo veiculo = new Veiculo();
-                    veiculo.setId(rs.getLong("veiculo_id"));
-
-                    OrdemServico ordemServico = new OrdemServico(
-                            rs.getLong("id"),
-                            rs.getString("descricao_problema"),
-                            rs.getBigDecimal("valor_servico"),
-                            rs.getString("status"),
-                            veiculo
-                    );
-                    ordensServico.add(ordemServico);
+                    lista.add(mapear(rs));
                 }
             }
         }
-        return ordensServico;
+        return lista;
     }
 
     public List<OrdemServico> listarTodos() throws SQLException {

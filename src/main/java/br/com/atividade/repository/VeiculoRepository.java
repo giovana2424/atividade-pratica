@@ -55,29 +55,18 @@ public class VeiculoRepository {
             WHERE v.cliente_id = ?
         """;
 
-        List<Veiculo> veiculos = new ArrayList<>();
+        List<Veiculo> lista = new ArrayList<>();
 
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, idCliente);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Cliente cliente = new Cliente();
-                    cliente.setId(rs.getLong("cliente_id"));
-                    cliente.setNome(rs.getString("cliente_nome"));
-
-                    Veiculo veiculo = new Veiculo(
-                            rs.getLong("id"),
-                            rs.getString("placa"),
-                            rs.getString("modelo"),
-                            rs.getInt("ano"),
-                            cliente
-                    );
-                    veiculos.add(veiculo);
+                    lista.add(mapear(rs));
                 }
             }
         }
-        return veiculos;
+        return lista;
     }
 
     public List<Veiculo> listarTodos() throws SQLException {
