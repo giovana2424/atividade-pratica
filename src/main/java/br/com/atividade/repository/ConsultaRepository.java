@@ -56,29 +56,18 @@ public class ConsultaRepository {
             ORDER BY c.data_atendimento
         """;
 
-        List<Consulta> consultas = new ArrayList<>();
+        List<Consulta> lista = new ArrayList<>();
 
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, idAnimal);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Animal animal = new Animal();
-                    animal.setId(rs.getLong("animal_id"));
-                    animal.setNome(rs.getString("animal_nome"));
-
-                    Consulta consulta = new Consulta(
-                            rs.getLong("id"),
-                            animal,
-                            rs.getObject("data_atendimento", java.time.LocalDate.class),
-                            rs.getString("motivo"),
-                            rs.getBigDecimal("valor")
-                    );
-                    consultas.add(consulta);
+                    lista.add(mapear(rs));
                 }
             }
         }
-        return consultas;
+        return lista;
     }
 
     public List<Consulta> listarTodos() throws SQLException {

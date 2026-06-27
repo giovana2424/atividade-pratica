@@ -55,28 +55,18 @@ public class AnimalRepository {
             ORDER BY a.nome
         """;
 
-        List<Animal> animais = new ArrayList<>();
+        List<Animal> lista = new ArrayList<>();
 
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, idTutor);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Tutor tutor = new Tutor();
-                    tutor.setId(rs.getLong("tutor_id"));
-
-                    Animal animal = new Animal(
-                            rs.getLong("id"),
-                            rs.getString("nome"),
-                            rs.getString("especie"),
-                            rs.getString("raca"),
-                            tutor
-                    );
-                    animais.add(animal);
+                    lista.add(mapear(rs));
                 }
             }
         }
-        return animais;
+        return lista;
     }
 
     public List<Animal> listarTodos() throws SQLException {
