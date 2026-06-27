@@ -8,8 +8,6 @@ import br.com.atividade.model.OrdemServico;
 import br.com.atividade.model.Veiculo;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
@@ -49,9 +47,8 @@ public class Main {
                         " | Status: " + os.getStatus());
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
