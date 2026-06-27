@@ -61,12 +61,4 @@ public class Veiculo {
     public void setPlaca(String placa) {
         this.placa = placa;
     }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public void setAno(Integer ano) {
-        this.ano = ano;
-    }
 }

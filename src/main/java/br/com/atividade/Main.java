@@ -41,7 +41,7 @@ public class Main {
 
             List<OrdemServico> ordensServicoDoVeiculo = ordemServicoController.buscarOrdensDeServicoPorVeiculo(veiculo.getId());
 
-            System.out.println("Histórico de manuntenções do veículo:");
+            System.out.println("\nHistórico de manutenções do veículo [" + veiculo.getPlaca() + " - " + veiculo.getModelo() + "]:");
 
             for (OrdemServico os : ordensServicoDoVeiculo){
                 System.out.println("Descrição: " + os.getDescricao() +

@@ -48,8 +48,7 @@ public class OrdemServicoRepository {
 
     public List<OrdemServico> buscarPorVeiculo(Long idVeiculo) throws SQLException {
         String sql = """
-            SELECT os.*,
-                   v.placa AS placa
+            SELECT os.*
             FROM ordem_servico os
             JOIN veiculo v ON os.veiculo_id = v.id
             WHERE os.veiculo_id = ?
@@ -64,7 +63,6 @@ public class OrdemServicoRepository {
                 while (rs.next()) {
                     Veiculo veiculo = new Veiculo();
                     veiculo.setId(rs.getLong("veiculo_id"));
-                    veiculo.setPlaca(rs.getString("placa"));
 
                     OrdemServico ordemServico = new OrdemServico(
                             rs.getLong("id"),
