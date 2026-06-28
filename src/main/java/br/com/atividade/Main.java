@@ -28,30 +28,41 @@ public class Main {
             System.out.println("Salvando o animal...");
             Animal animal = animalController.cadastrarAnimal("Lulu", "Cachorro", "Pitbull", tutor.getId());
 
-            List<Animal> animaisDoTutor = animalController.buscarAnimaisPorTutor(tutor.getId());
-
-            System.out.println("Animais de " + tutor.getNome() + ":");
-            for (Animal a : animaisDoTutor) {
-                System.out.println("Nome: " + a.getNome() +
-                        " | Espécie: " + a.getEspecie() +
-                        " | Raça: " + a.getRaca());
-            }
-
             System.out.println("\nRegistrando consulta...");
             Consulta consulta = consultaController.registrarConsulta(LocalDate.now(), "Rotina / Vacinação", new BigDecimal("150.00"), animal.getId());
 
-            List<Consulta> consultasDoAnimal = consultaController.buscarConsultasPorAnimal(animal.getId());
+            apresentarResultado(animalController.buscarAnimaisPorTutor(tutor.getId()), tutor);
 
-            System.out.println("Histórico de consultas de " + animal.getNome() + ":");
-
-            for (Consulta c : consultasDoAnimal){
-                System.out.println("Data do atendimento: " + c.getData() +
-                        " | Motivo: " + c.getMotivo() +
-                        " | Valor: R$" + c.getValor());
-            }
+            apresentarResultado(consultaController.buscarConsultasPorAnimal(animal.getId()), animal);
 
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    public static void apresentarResultado(List<Consulta> consultas, Animal animal){
+        System.out.println("Histórico de consultas de " + animal.getNome() + ":");
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhum animal cadastrado.");
+            return;
+        }
+        for (Consulta c : consultas){
+            System.out.println("Data do atendimento: " + c.getData() +
+                    " | Motivo: " + c.getMotivo() +
+                    " | Valor: R$" + c.getValor());
+        }
+    }
+
+    public static void apresentarResultado(List<Animal> animais, Tutor tutor){
+        System.out.println("Animais de " + tutor.getNome() + ":");
+        if (animais.isEmpty()) {
+            System.out.println("Nenhum animal cadastrado.");
+            return;
+        }
+        for (Animal a : animais) {
+            System.out.println("Nome: " + a.getNome() +
+                    " | Espécie: " + a.getEspecie() +
+                    " | Raça: " + a.getRaca());
         }
     }
 }
