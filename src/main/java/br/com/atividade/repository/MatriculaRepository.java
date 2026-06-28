@@ -118,6 +118,23 @@ public class MatriculaRepository {
         return lista;
     }
 
+    public boolean existeMatricula(Long idAluno, Long idCurso) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM matricula WHERE aluno_id = ? AND curso_id = ?";
+
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, idAluno);
+            stmt.setLong(2, idCurso);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
 
     public List<Matricula> listarTodos() throws SQLException {
         String sql = """

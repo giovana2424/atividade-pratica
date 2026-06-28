@@ -41,6 +41,10 @@ public class MatriculaService {
                 throw new IllegalStateException("Curso sem vagas disponíveis.");
         }
 
+        if (matriculaRepository.existeMatricula(idAluno, idCurso)) {
+            throw new IllegalStateException("Não foi possível realizar a matrícula: Este aluno já está matriculado neste curso.");
+        }
+
         Matricula novaMatricula = new Matricula(null, dataMatricula, valor, aluno, curso);
         return matriculaRepository.salvar(novaMatricula);
     }
