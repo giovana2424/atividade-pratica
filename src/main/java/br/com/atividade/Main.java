@@ -43,7 +43,7 @@ public class Main {
     public static void apresentarResultado(List<Consulta> consultas, Animal animal){
         System.out.println("Histórico de consultas de " + animal.getNome() + ":");
         if (consultas.isEmpty()) {
-            System.out.println("Nenhum animal cadastrado.");
+            System.out.println("Nenhuma consulta cadastrada.");
             return;
         }
         for (Consulta c : consultas){
