@@ -47,10 +47,6 @@ public class Curso {
         return vagasDisponiveis > 0;
     }
 
-    public void decrementarVaga(){
-        vagasDisponiveis -= 1;
-    }
-
     public Long getId() {
         return id;
     }
