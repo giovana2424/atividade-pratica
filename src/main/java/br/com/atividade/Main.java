@@ -43,6 +43,10 @@ public class Main {
 
     public static void apresentarResultado(List<Curso> cursos, Aluno aluno){
         System.out.println("Cursos de " + aluno.getNome() + ":");
+        if (cursos.isEmpty()) {
+            System.out.println("Nenhum curso cadastrado.");
+            return;
+        }
         for (Curso c : cursos) {
             System.out.println("Nome: " +c.getNome() +
                     " | Carga Horária: " + c.getCargaHoraria());
@@ -51,6 +55,10 @@ public class Main {
 
     public static void apresentarResultado(List<Aluno> alunos, Curso curso){
         System.out.println("Alunos do curso de " + curso.getNome() + ":");
+        if (alunos.isEmpty()) {
+            System.out.println("Nenhum aluno cadastrado.");
+            return;
+        }
         for (Aluno a : alunos) {
             System.out.println("Nome: " + a.getNome() +
                     " | E-mail: " + a.getEmail() +
